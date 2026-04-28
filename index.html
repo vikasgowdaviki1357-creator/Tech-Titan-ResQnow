@@ -1,78 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ResQNow - Emergency Services</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RAPID RESPONSE — Emergency & Essential Services</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
-
 <body>
+    <button id="sos">🚨 SOS - Get Help</button>
+    <button onclick="filter('hospital')">Hospital</button>
 
-<!-- 🔷 NAVBAR -->
-<header class="navbar">
-  <h1 class="logo">🚑 ResQNow</h1>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Services</a>
-    <a href="#">Emergency</a>
-    <a href="#">Contact</a>
-  </nav>
-</header>
+<div class="card" data-type="hospital">Apollo Hospital</div>
+<div class="card" data-type="police">Police Station</div>
 
-<!-- 🔥 HERO SECTION -->
-<section class="hero">
-  <h2>Instant Help, Anytime, Anywhere</h2>
-  <p>Find nearby emergency services in seconds</p>
-  
-  <button class="emergency-btn">🚨 Emergency Help</button>
-</section>
-
-<!-- 🧰 SERVICES -->
-<section class="services">
-  <h2>Available Services</h2>
-
-  <div class="card-container">
-
-    <div class="card">
-      <h3>🏥 Hospital</h3>
-      <p>Find nearest hospitals instantly</p>
-      <button>Find Now</button>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">RAPID<span class="logo-sub">RESPONSE</span></span>
+      </div>
+      <div class="header-status">
+        <span class="pulse-dot"></span>
+        <span id="locationStatus">Acquiring location...</span>
+      </div>
+      <button class="sos-btn" id="sosBtn" onclick="triggerSOS()">
+        <span class="sos-ring"></span>
+        SOS
+      </button>
     </div>
+  </header>
 
-    <div class="card">
-      <h3>🚓 Police</h3>
-      <p>Quick access to police stations</p>
-      <button>Find Now</button>
+  <!-- HERO BANNER -->
+  <section class="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">LIVE • LOCATION-AWARE</div>
+      <h1 class="hero-title">Help is<br/><span class="hero-accent">seconds away.</span></h1>
+      <p class="hero-sub">Instantly connect with emergency and essential services near you — no searching, no delays.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" data-target="3">0</span><span class="stat-label">Min avg response</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-target="500">0</span><span class="stat-label">Services nearby</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-target="24">0</span><span class="stat-label">Hours available</span></div>
+      </div>
     </div>
-
-    <div class="card">
-      <h3>🔧 Mechanic</h3>
-      <p>Roadside assistance anytime</p>
-      <button>Find Now</button>
+    <div class="hero-visual">
+      <div class="radar-wrap">
+        <div class="radar-circle r1"></div>
+        <div class="radar-circle r2"></div>
+        <div class="radar-circle r3"></div>
+        <div class="radar-sweep"></div>
+        <div class="radar-center">YOU</div>
+        <div class="radar-blip b1">🏥</div>
+        <div class="radar-blip b2">🚔</div>
+        <div class="radar-blip b3">🔧</div>
+        <div class="radar-blip b4">🔥</div>
+      </div>
     </div>
+  </section>
 
-    <div class="card">
-      <h3>⚡ Electrician</h3>
-      <p>Emergency repair services</p>
-      <button>Find Now</button>
+  <!-- SERVICE CATEGORY TABS -->
+  <section class="categories">
+    <div class="card" data-type="medical">Apollo Hospital</div>
+    <div class="card" data-type="police">Police Station</div>
+    <div class="card" data-type="fire">Fire Station</div>
+    <div class="container">
+      <div class="section-label">FIND HELP BY CATEGORY</div>
+      <div class="cat-grid">
+        <button class="cat-btn active" data-cat="all" onclick="filterCategory('all',this)">
+          <span class="cat-icon">🌐</span>All Services
+        </button>
+        <button class="cat-btn emergency" data-cat="emergency" onclick="filterCategory('emergency',this)">
+          <span class="cat-icon">🚨</span>Emergency
+        </button>
+        <button class="cat-btn medical" data-cat="medical" onclick="filterCategory('medical',this)">
+          <span class="cat-icon">🏥</span>Medical
+        </button>
+        <button class="cat-btn fire" data-cat="fire" onclick="filterCategory('fire',this)">
+          <span class="cat-icon">🔥</span>Fire
+        </button>
+        <button class="cat-btn police" data-cat="police" onclick="filterCategory('police',this)">
+          <span class="cat-icon">🚔</span>Police
+        </button>
+        <button class="cat-btn mechanic" data-cat="mechanic" onclick="filterCategory('mechanic',this)">
+          <span class="cat-icon">🔧</span>Mechanic
+        </button>
+        <button class="cat-btn electric" data-cat="electric" onclick="filterCategory('electric',this)">
+          <span class="cat-icon">⚡</span>Electrician
+        </button>
+        <button class="cat-btn plumber" data-cat="plumber" onclick="filterCategory('plumber',this)">
+          <span class="cat-icon">🔩</span>Plumber
+        </button>
+      </div>
     </div>
+  </section>
 
+  <!-- MAIN LAYOUT: MAP + LISTINGS -->
+  <section class="main-layout">
+    <div class="container-wide">
+      <div class="map-panel">
+        <div class="map-header">
+          <span class="map-label">LIVE MAP</span>
+          <span id="mapCoords" class="map-coords">Locating...</span>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span>🏥 Hospital</span>
+          <span>🚔 Police</span>
+          <span>🔥 Fire</span>
+          <span>🔧 Services</span>
+        </div>
+      </div>
+      <div class="listings-panel">
+        <div class="listings-header">
+          <span class="listings-label">NEARBY SERVICES</span>
+          <input class="search-box" type="text" placeholder="Search services..." id="searchInput" oninput="filterSearch()" />
+        </div>
+        <div class="listings-scroll" id="serviceList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY QUICK-DIAL STRIP -->
+  <section class="quick-dial">
+    <div class="container">
+      <div class="qd-label">EMERGENCY QUICK DIAL</div>
+      <div class="qd-grid">
+        <a href="tel:112" class="qd-card qd-national"><span class="qd-num">112</span><span class="qd-desc">National Emergency</span></a>
+        <a href="tel:102" class="qd-card qd-ambulance"><span class="qd-num">102</span><span class="qd-desc">Ambulance</span></a>
+        <a href="tel:100" class="qd-card qd-police"><span class="qd-num">100</span><span class="qd-desc">Police</span></a>
+        <a href="tel:101" class="qd-card qd-fire"><span class="qd-num">101</span><span class="qd-desc">Fire Brigade</span></a>
+        <a href="tel:1091" class="qd-card qd-women"><span class="qd-num">1091</span><span class="qd-desc">Women Helpline</span></a>
+        <a href="tel:1098" class="qd-card qd-child"><span class="qd-num">1098</span><span class="qd-desc">Child Helpline</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-label centered">HOW IT WORKS</div>
+      <h2 class="hiw-title">Three steps to safety</h2>
+      <div class="hiw-steps">
+        <div class="hiw-step">
+          <div class="hiw-icon">📍</div>
+          <div class="hiw-num">01</div>
+          <h3>Share Location</h3>
+          <p>Allow location access. We instantly detect your coordinates and find all nearby services in real time.</p>
+        </div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step">
+          <div class="hiw-icon">🔍</div>
+          <div class="hiw-num">02</div>
+          <h3>Pick a Service</h3>
+          <p>Browse by category or search. Each listing shows distance, live availability, and direct contact details.</p>
+        </div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step">
+          <div class="hiw-icon">📞</div>
+          <div class="hiw-num">03</div>
+          <h3>Connect Instantly</h3>
+          <p>Tap to call. Get directions. Help is dispatched to your exact location within minutes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div id="map" style="height: 400px; margin: 20px;"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">RAPID<span class="logo-sub">RESPONSE</span></span>
+          <p>Built for moments when every second counts.</p>
+        </div>
+        <div class="footer-links">
+          <div>
+            <strong>Emergency</strong>
+            <a href="tel:112">112 — National</a>
+            <a href="tel:102">102 — Ambulance</a>
+            <a href="tel:101">101 — Fire</a>
+            <a href="tel:100">100 — Police</a>
+          </div>
+          <div>
+            <strong>Platform</strong>
+            <a href="#">Add Your Service</a>
+            <a href="#">Partner With Us</a>
+            <a href="#">API Access</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 RapidResponse. All rights reserved.</span>
+        <span>🇮🇳 Made for India</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SOS MODAL -->
+  <div class="sos-modal" id="sosModal">
+    <div class="sos-modal-inner">
+      <div class="sos-alert-icon">🆘</div>
+      <h2>SOS Activated</h2>
+      <p>Sending your live location to emergency contacts and dispatching nearest available emergency services.</p>
+      <div class="sos-calling">
+        <div class="sos-call-item">🚑 Ambulance — <strong>Calling...</strong></div>
+        <div class="sos-call-item">🚔 Police — <strong>Alerting...</strong></div>
+        <div class="sos-call-item">📍 Location — <strong id="sosLocation">Sharing...</strong></div>
+      </div>
+      <button class="sos-cancel" onclick="cancelSOS()">Cancel SOS</button>
+    </div>
   </div>
-</section>
 
-<!-- 📍 LOCATION SECTION -->
-<section class="location">
-  <h2>Your Location</h2>
-  <button onclick="getLocation()">📍 Detect Location</button>
-  <p id="locationText">Location not detected</p>
-</section>
-
-<!-- 🔻 FOOTER -->
-<footer>
-  <p>© 2026 ResQNow | Built for Hackathon 🚀</p>
-</footer>
-
-<script src="script.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
