@@ -9,32 +9,56 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
 </head>
 <body>
     <button id="sos">🚨 SOS - Get Help</button>
-    <button onclick="filter('hospital')">Hospital</button>
-
-<div class="card" data-type="hospital">Apollo Hospital</div>
-<div class="card" data-type="police">Police Station</div>
-
+    
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
-      <div class="logo">
-        <span class="logo-icon">⚡</span>
-        <span class="logo-text">RAPID<span class="logo-sub">RESPONSE</span></span>
-      </div>
+  <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <span class="logo-text">ResQnow<span class="logo-sub">RESPONSE</span></span>
+  </div>
+
+  <div class="header-status">
+    <span class="pulse-dot"></span>
+    <span id="locationStatus">Acquiring location...</span>
+  </div>
+
+  <!-- 👇 AUTH UI -->
+  <div id="authArea" class="auth-area"></div>
+
+  <button class="sos-btn" id="sosBtn" onclick="triggerSOS()">
+    <span class="sos-ring"></span>
+    SOS
+  </button>
+</div>
+     
       <div class="header-status">
         <span class="pulse-dot"></span>
         <span id="locationStatus">Acquiring location...</span>
       </div>
-      <button class="sos-btn" id="sosBtn" onclick="triggerSOS()">
-        <span class="sos-ring"></span>
-        SOS
-      </button>
+      
+        
     </div>
   </header>
+  <button onclick="sendSOS()" style="
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:red;
+  color:white;
+  padding:15px;
+  border:none;
+  border-radius:50%;
+  font-size:18px;
+  box-shadow:0 0 15px red;
+  cursor:pointer;">
+  SOS
+</button>
 
   <!-- HERO BANNER -->
   <section class="hero">
@@ -65,12 +89,15 @@
       </div>
     </div>
   </section>
+  <script>
+ if (!localStorage.getItem("loggedInUser")) {
+  window.location.href = "login.html";
+ }
+</script>
 
   <!-- SERVICE CATEGORY TABS -->
   <section class="categories">
-    <div class="card" data-type="medical">Apollo Hospital</div>
-    <div class="card" data-type="police">Police Station</div>
-    <div class="card" data-type="fire">Fire Station</div>
+   
     <div class="container">
       <div class="section-label">FIND HELP BY CATEGORY</div>
       <div class="cat-grid">
@@ -225,5 +252,87 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="data.js"></script>
   <script src="app.js"></script>
+  <script>
+function updateAuthUI() {
+  const user = localStorage.getItem("loggedInUser");
+  const el = document.getElementById("authArea");
+
+  if (user) {
+    el.innerHTML = `
+      <span style="margin-right:10px;">👤 ${user}</span>
+      <button onclick="logout()" style="
+        padding:6px 12px;
+        border:none;
+        border-radius:8px;
+        background:#00ffcc;
+        cursor:pointer;">
+        Logout
+      </button>
+    `;
+  } else {
+    el.innerHTML = `
+      <a href="login.html">
+        <button style="
+          padding:6px 12px;
+          border:none;
+          border-radius:8px;
+          background:#00ffcc;
+          cursor:pointer;">
+          Login
+        </button>
+      </a>
+    `;
+  }
+}
+
+function updateAuthUI() {
+  const user = localStorage.getItem("loggedInUser");
+  const el = document.getElementById("authArea");
+
+  if (user) {
+    el.innerHTML = `
+      <div class="profile" onclick="toggleDropdown()">
+        <div class="avatar">${user.charAt(0).toUpperCase()}</div>
+      </div>
+
+      <div id="dropdownMenu" class="dropdown">
+        <p style="color:white; margin-bottom:8px;">👤 ${user}</p>
+        <button onclick="logout()">Logout</button>
+      </div>
+    `;
+  } else {
+    el.innerHTML = `
+      <a href="login.html">
+        <button style="
+          padding:6px 12px;
+          border:none;
+          border-radius:8px;
+          background:#00ffcc;
+          cursor:pointer;">
+          Login
+        </button>
+      </a>
+    `;
+  }
+}
+
+function toggleDropdown() {
+  const menu = document.getElementById("dropdownMenu");
+  menu.classList.toggle("show");
+}
+
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "login.html";
+}
+
+updateAuthUI();
+
+</script>
+<script>
+if (!localStorage.getItem("loggedInUser")) {
+  window.location.href = "login.html";
+}
+</script>
 </body>
 </html>
