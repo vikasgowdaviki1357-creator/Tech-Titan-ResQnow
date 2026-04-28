@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ResQNow - Emergency Services</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<!-- 🔷 NAVBAR -->
+<header class="navbar">
+  <h1 class="logo">🚑 ResQNow</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Services</a>
+    <a href="#">Emergency</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<!-- 🔥 HERO SECTION -->
+<section class="hero">
+  <h2>Instant Help, Anytime, Anywhere</h2>
+  <p>Find nearby emergency services in seconds</p>
+  
+  <button class="emergency-btn">🚨 Emergency Help</button>
+</section>
+
+<!-- 🧰 SERVICES -->
+<section class="services">
+  <h2>Available Services</h2>
+
+  <div class="card-container">
+
+    <div class="card">
+      <h3>🏥 Hospital</h3>
+      <p>Find nearest hospitals instantly</p>
+      <button>Find Now</button>
+    </div>
+
+    <div class="card">
+      <h3>🚓 Police</h3>
+      <p>Quick access to police stations</p>
+      <button>Find Now</button>
+    </div>
+
+    <div class="card">
+      <h3>🔧 Mechanic</h3>
+      <p>Roadside assistance anytime</p>
+      <button>Find Now</button>
+    </div>
+
+    <div class="card">
+      <h3>⚡ Electrician</h3>
+      <p>Emergency repair services</p>
+      <button>Find Now</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- 📍 LOCATION SECTION -->
+<section class="location">
+  <h2>Your Location</h2>
+  <button onclick="getLocation()">📍 Detect Location</button>
+  <p id="locationText">Location not detected</p>
+</section>
+
+<!-- 🔻 FOOTER -->
+<footer>
+  <p>© 2026 ResQNow | Built for Hackathon 🚀</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
