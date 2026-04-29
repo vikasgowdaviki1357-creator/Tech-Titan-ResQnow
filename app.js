@@ -116,10 +116,10 @@ async function loadPlaces(type) {
   name: p.tags?.name || "Service",
   lat: p.lat,
   lon: p.lon,
-  type: type,
+  type: type,   // 🔥 MUST BE HERE
+  phone: p.tags?.phone || p.tags?.["contact:phone"] || null, // 🔥 MUST
   distance: dist,
   eta: Math.max(2, Math.round((dist / 30) * 60)),
-  phone: p.tags?.phone || p.tags?.["contact:phone"] || null, // ✅ ADD
   status: getLiveStatus()
 };
   });
