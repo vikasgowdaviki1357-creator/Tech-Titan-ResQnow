@@ -20,7 +20,7 @@
     <div class="header-inner">
   <div class="logo">
     <span class="logo-icon">⚡</span>
-    <span class="logo-text">ResQnow<span class="logo-sub">RESPONSE</span></span>
+    <span class="logo-text">ResQnow<span class="logo-sub"></span></span>
   </div>
 
   <div class="header-status">
@@ -40,10 +40,7 @@
       <div class="header-status">
         <span class="pulse-dot"></span>
         <span id="locationStatus">Acquiring location...</span>
-      </div>
-      
-        
-    </div>
+
   </header>
   <button onclick="sendSOS()" style="
   position:fixed;
@@ -148,7 +145,7 @@
       <div class="listings-panel">
         <div class="listings-header">
           <span class="listings-label">NEARBY SERVICES</span>
-          <input class="search-box" type="text" placeholder="Search services..." id="searchInput" oninput="filterSearch()" />
+          <input class="search-box" type="text" placeholder="Search services..." id="searchInput" oninput="searchServices()" />
         </div>
         <div class="listings-scroll" id="serviceList"></div>
       </div>
